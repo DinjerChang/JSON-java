@@ -24,6 +24,7 @@ import java.util.Map;
 import org.json.*;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 
@@ -1246,6 +1247,143 @@ public class XMLTest {
         } catch (IOException e) {
             fail("file writer error: " +e.getMessage());
         }
+    }
+
+    @Test
+    public void testM2P1WithNoSlash_1(){
+        String xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
+                "<contact>\n"+
+                "    <nick>Crista </nick>\n"+
+                "    <name>Crista Lopes</name>\n" +
+                "    <address>\n" +
+                "      <street>Ave of Nowhere</street>\n" +
+                "      <zipcode>92614</zipcode>\n" +
+                "    </address>\n" +
+                "</contact>";
+        JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address"));
+        String expectedJsonString = "{\"address\":{\"street\":\"Ave of Nowhere\",\"zipcode\":92614}}";
+        JSONObject expectedJson = new JSONObject(expectedJsonString);
+        Util.compareActualVsExpectedJsonObjects(jobj, expectedJson);
+    }
+
+    @Test
+    public void testM2P1WithNoSlash_2(){
+        String xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
+                "<contact>\n"+
+                "    <nick>Crista </nick>\n"+
+                "    <name>Crista Lopes</name>\n" +
+                "    <address>\n" +
+                "      <street>Ave of Nowhere</street>\n" +
+                "      <zipcode>92614</zipcode>\n" +
+                "    </address>\n" +
+                "</contact>";
+        JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact"));
+        String expectedJsonString = "{\"contact\":{\"nick\":\"Crista\",\"address\":{\"zipcode\":92614,\"street\":\"Ave of Nowhere\"},\"name\":\"Crista Lopes\"}}";
+        JSONObject expectedJson = new JSONObject(expectedJsonString);
+        Util.compareActualVsExpectedJsonObjects(jobj, expectedJson);
+    }
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
+    @Test
+    public void testM2P1WithSlash() {
+        exceptionRule.expect(JSONPointerException.class);
+        exceptionRule.expectMessage("Invalid Path with '/' ending");
+        String xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
+                "<contact>\n"+
+                "    <nick>Crista </nick>\n"+
+                "    <name>Crista Lopes</name>\n" +
+                "    <address>\n" +
+                "      <street>Ave of Nowhere</street>\n" +
+                "      <zipcode>92614</zipcode>\n" +
+                "    </address>\n" +
+                "</contact>";
+        XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/"));
+    }
+
+    @Test
+    public void testM2P1WrongPath() {
+        exceptionRule.expect(JSONPointerException.class);
+        exceptionRule.expectMessage("Path not found");
+        String xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
+                "<contact>\n"+
+                "    <nick>Crista </nick>\n"+
+                "    <name>Crista Lopes</name>\n" +
+                "    <address>\n" +
+                "      <street>Ave of Nowhere</street>\n" +
+                "      <zipcode>92614</zipcode>\n" +
+                "    </address>\n" +
+                "</contact>";
+        XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/nooo"));
+    }
+
+    @Test
+    public void testM2P2WithNoSlash_1(){
+        String xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
+                "<contact>\n"+
+                "    <nick>Crista </nick>\n"+
+                "    <name>Crista Lopes</name>\n" +
+                "    <address>\n" +
+                "      <street>Ave of Nowhere</street>\n" +
+                "      <zipcode>92614</zipcode>\n" +
+                "    </address>\n" +
+                "</contact>";
+        JSONObject replacement = XML.toJSONObject("<street>Ave of the Arts</street>\n");
+        JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/street"), replacement);
+        String expectedJsonString = "{\"contact\":{\"nick\":\"Crista\",\"address\":{\"zipcode\":92614,\"street\":{\"Ave of the Arts\"},\"name\":\"Crista Lopes\"}}";
+        JSONObject expectedJson = new JSONObject(expectedJsonString);
+        Util.compareActualVsExpectedJsonObjects(jobj, expectedJson);
+    }
+
+    @Test
+    public void testM2P2WithNoSlash_2(){
+        String xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
+                "<contact>\n"+
+                "    <nick>Crista </nick>\n"+
+                "    <name>Crista Lopes</name>\n" +
+                "    <address>\n" +
+                "      <street>Ave of Nowhere</street>\n" +
+                "      <zipcode>92614</zipcode>\n" +
+                "    </address>\n" +
+                "</contact>";
+        JSONObject replacement = XML.toJSONObject("<street>Ave of the Arts</street>\n");
+        JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact"), replacement);
+        String expectedJsonString = "{\"contact\":{\"street\":\"Ave of the Arts\"}";
+        JSONObject expectedJson = new JSONObject(expectedJsonString);
+        Util.compareActualVsExpectedJsonObjects(jobj, expectedJson);
+    }
+
+    @Test
+    public void testM2P2WithSlash() {
+        exceptionRule.expect(JSONPointerException.class);
+        exceptionRule.expectMessage("Invalid Path with '/' ending");
+        String xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
+                "<contact>\n"+
+                "    <nick>Crista </nick>\n"+
+                "    <name>Crista Lopes</name>\n" +
+                "    <address>\n" +
+                "      <street>Ave of Nowhere</street>\n" +
+                "      <zipcode>92614</zipcode>\n" +
+                "    </address>\n" +
+                "</contact>";
+        XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/"));
+    }
+
+    @Test
+    public void testM2P2WrongPath() {
+        exceptionRule.expect(JSONPointerException.class);
+        exceptionRule.expectMessage("Path not found");
+        String xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
+                "<contact>\n"+
+                "    <nick>Crista </nick>\n"+
+                "    <name>Crista Lopes</name>\n" +
+                "    <address>\n" +
+                "      <street>Ave of Nowhere</street>\n" +
+                "      <zipcode>92614</zipcode>\n" +
+                "    </address>\n" +
+                "</contact>";
+        XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/nooo"));
     }
 }
 
