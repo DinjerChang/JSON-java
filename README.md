@@ -3,6 +3,23 @@
 <sub><sup>image credit: Ismael Pérez Ortiz</sup></sub>
 
 
+### < Milestone2 >
+<pre>
+We wrote eight tests for testing Problem1 and Problem2.  
+
+-----Problem 1-----
+1. testM2P1WithNoSlash_1()     //No slash at the end of JSONPointer
+2. testM2P1WithNoSlash_2()     //No slash at the end of JSONPointer
+3. testM2P1WithSlash()         //With slash at the end of JSONPointer (throws exception: "Invalid Path with '/' ending")
+4. testM2P1WrongPath()         //Wrong JSONPointer (throws exception: "Path not found")
+
+-----Problem 2-----
+1. testM2P2WithNoSlash_1()     //No slash at the end of JSONPointer
+2. testM2P2WithNoSlash_2()     //No slash at the end of JSONPointer
+3. testM2P2WithSlash()         //With slash at the end of JSONPointer (throws exception: "Invalid Path with '/' ending")
+4. testM2P2WrongPath()         //Wrong JSONPointer (throws exception: "Path not found")
+</pre>
+
 JSON in Java [package org.json]
 ===============================
 

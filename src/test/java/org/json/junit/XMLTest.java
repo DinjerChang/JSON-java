@@ -1331,7 +1331,7 @@ public class XMLTest {
                 "</contact>";
         JSONObject replacement = XML.toJSONObject("<street>Ave of the Arts</street>\n");
         JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/street"), replacement);
-        String expectedJsonString = "{\"contact\":{\"nick\":\"Crista\",\"address\":{\"zipcode\":92614,\"street\":{\"Ave of the Arts\"},\"name\":\"Crista Lopes\"}}";
+        String expectedJsonString = "{\"contact\":{\"nick\":\"Crista\",\"address\":{\"zipcode\":92614,\"street\":\"Ave of the Arts\"},\"name\":\"Crista Lopes\"}}";
         JSONObject expectedJson = new JSONObject(expectedJsonString);
         Util.compareActualVsExpectedJsonObjects(jobj, expectedJson);
     }
@@ -1349,7 +1349,7 @@ public class XMLTest {
                 "</contact>";
         JSONObject replacement = XML.toJSONObject("<street>Ave of the Arts</street>\n");
         JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact"), replacement);
-        String expectedJsonString = "{\"contact\":{\"street\":\"Ave of the Arts\"}";
+        String expectedJsonString = "{\"contact\":{\"street\":\"Ave of the Arts\"}}";
         JSONObject expectedJson = new JSONObject(expectedJsonString);
         Util.compareActualVsExpectedJsonObjects(jobj, expectedJson);
     }
