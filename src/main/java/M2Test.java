@@ -15,19 +15,13 @@ public class M2Test {
                 "    <street>Ave of Nowhere</street>\n" +
                 "    <zipcode>92614</zipcode>\n" +
                 "  </address>\n" +
-                "  <address>\n" +
-                "    <street>Verano Road</street>\n" +
-                "    <zipcode>92617</zipcode>\n" +
-                "  </address>\n" +
                 "</contact>";
 
         try {
-//            JSONObject test = XML.toJSONObject(xmlString);
-//            System.out.println(test);
-            JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/"));
-            System.out.println(jobj);
+            JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address"));
+            System.out.println("res: " + jobj);
 
-        } catch (JSONException e) {
+        } catch (JSONException  e) {
             System.out.println(e);
         }
 
