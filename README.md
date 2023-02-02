@@ -18,6 +18,8 @@ We wrote eight tests for testing Problem1 and Problem2.
 2. testM2P2WithNoSlash_2()     //No slash at the end of JSONPointer
 3. testM2P2WithSlash()         //With slash at the end of JSONPointer (throws exception: "Invalid Path with '/' ending")
 4. testM2P2WrongPath()         //Wrong JSONPointer (throws exception: "Path not found")
+
+Run "mvn clean test -Dtest=XMLTest" to test XMLTest.java
 </pre>
 
 JSON in Java [package org.json]
