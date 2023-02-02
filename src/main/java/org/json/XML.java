@@ -1101,7 +1101,7 @@ public class XML {
 
             List<String> level = new ArrayList<>(Arrays.asList(desiredPath.split("/")));
 //            System.out.println("level: " + level.get(level.size()-1));
-            if (token.toString().equalsIgnoreCase(level.get(level.size()-1))){
+            if (currPath.equalsIgnoreCase(desiredPath) && token.toString().equalsIgnoreCase(level.get(level.size()-1))){
                 isReachedParse1 = true;
 //                System.out.println("isReached:" + isReached);
             }
@@ -1253,13 +1253,17 @@ public class XML {
                                             context.accumulate(tagName, jsonObject);
                                         }
                                     }
+                                    if (isReachedParse1 == true){
+                                        System.out.println("context: " + context);
+                                        throw new EarlyTermination(context);
+                                    }
 
                                 }
 //                                System.out.println("isReached1:" + isReachedParse1);
-                                if (isReachedParse1 == true){
+                                /*if (isReachedParse1 == true){
                                     System.out.println("context: " + context);
                                     throw new EarlyTermination(context);
-                                }
+                                }*/
 
                                 return false;
                             }
@@ -1349,7 +1353,7 @@ public class XML {
 
             List<String> level = new ArrayList<>(Arrays.asList(desiredPath.split("/")));
 //            System.out.println("level: " + level.get(level.size()-1));
-            if (token.toString().equalsIgnoreCase(level.get(level.size()-1))){
+            if (currPath.equalsIgnoreCase(desiredPath) && token.toString().equalsIgnoreCase(level.get(level.size()-1))){
                 isReachedParse2 = true;
 //                System.out.println("isReached:" + isReached);
             }

@@ -1277,14 +1277,11 @@ public class XMLTest {
                 "      <zipcode>92614</zipcode>\n" +
                 "    </address>\n" +
                 "</contact>";
-        JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact"));
-        String expectedJsonString = "{\"contact\":{\"nick\":\"Crista\",\"address\":{\"zipcode\":92614,\"street\":\"Ave of Nowhere\"},\"name\":\"Crista Lopes\"}}";
+        JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/street"));
+        String expectedJsonString = "{\"street\":\"Ave of Nowhere\"}";
         JSONObject expectedJson = new JSONObject(expectedJsonString);
         Util.compareActualVsExpectedJsonObjects(jobj, expectedJson);
     }
-
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Test
     public void testM2P1WithSlash() {
@@ -1301,6 +1298,9 @@ public class XMLTest {
                 "</contact>";
         XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/"));
     }
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Test
     public void testM2P1WrongPath() {
@@ -1367,7 +1367,8 @@ public class XMLTest {
                 "      <zipcode>92614</zipcode>\n" +
                 "    </address>\n" +
                 "</contact>";
-        XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/"));
+        JSONObject replacement = XML.toJSONObject("<street>Ave of the Arts</street>\n");
+        XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/"), replacement);
     }
 
     @Test
@@ -1383,7 +1384,8 @@ public class XMLTest {
                 "      <zipcode>92614</zipcode>\n" +
                 "    </address>\n" +
                 "</contact>";
-        XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/nooo"));
+        JSONObject replacement = XML.toJSONObject("<street>Ave of the Arts</street>\n");
+        XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/nooo"), replacement);
     }
 }
 

@@ -19,7 +19,7 @@ public class M2Test {
 
         try {
 
-            JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact"));
+            JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/street"));
 
             System.out.println("res: " + jobj);
 
