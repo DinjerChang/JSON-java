@@ -693,7 +693,7 @@ public class XML {
         JSONObject jo = new JSONObject();
         XMLTokener x = new XMLTokener(reader);
         String desiredPath = path.toString();
-        
+        isReachedParse1 = false;
         if (Character.toString(desiredPath.charAt(desiredPath.length()- 1)).equalsIgnoreCase("/")){
            throw new JSONPointerException("Invalid Path with '/' ending");
         }
@@ -719,7 +719,7 @@ public class XML {
         JSONObject jo = new JSONObject();
         XMLTokener x = new XMLTokener(reader);
         String desiredPath = path.toString();
-
+        isReachedParse2 = false;
         if (Character.toString(desiredPath.charAt(desiredPath.length()- 1)).equalsIgnoreCase("/")){
             throw new JSONPointerException("Invalid Path with '/' ending");
         }

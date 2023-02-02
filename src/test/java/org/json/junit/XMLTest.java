@@ -1277,8 +1277,8 @@ public class XMLTest {
                 "      <zipcode>92614</zipcode>\n" +
                 "    </address>\n" +
                 "</contact>";
-        JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/street"));
-        String expectedJsonString = "{\"street\":\"Ave of Nowhere\"}";
+        JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact"));
+        String expectedJsonString = "{\"contact\":{\"nick\":\"Crista\",\"address\":{\"zipcode\":92614,\"street\":\"Ave of Nowhere\"},\"name\":\"Crista Lopes\"}}";
         JSONObject expectedJson = new JSONObject(expectedJsonString);
         Util.compareActualVsExpectedJsonObjects(jobj, expectedJson);
     }
