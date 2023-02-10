@@ -1602,7 +1602,7 @@ public class XML {
                     if (x.next() == '[') {
                         string = x.nextCDATA();
                         if (string.length() > 0) {
-                            context.accumulate(keyTransformer.apply(config.getcDataTagName()), string);
+                            context.accumulate(config.getcDataTagName(), string);
                         }
                         return false;
                     }
@@ -1728,10 +1728,10 @@ public class XML {
                             string = (String) token;
                             if (string.length() > 0) {
                                 if (xmlXsiTypeConverter != null) {
-                                    jsonObject.accumulate(keyTransformer.apply(config.getcDataTagName()),
+                                    jsonObject.accumulate(config.getcDataTagName(),
                                             stringToValue(string, xmlXsiTypeConverter));
                                 } else {
-                                    jsonObject.accumulate(keyTransformer.apply(config.getcDataTagName()),
+                                    jsonObject.accumulate(config.getcDataTagName(),
                                             config.isKeepStrings() ? string : stringToValue(string));
                                 }
                             }
