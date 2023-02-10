@@ -739,6 +739,21 @@ public class XML {
     }
 
     public static JSONObject toJSONObject(Reader reader, Function<String, String> keyTransformer) {
+        // check string condition
+        String res1 = keyTransformer.apply("res1");
+        String res2 = keyTransformer.apply("res2");
+        // Transform key to null
+        if (res1 == null) {
+            throw new JSONException("Invalid: transform key to null");
+        }
+        // Transform key to empty string
+        if (res2.equals("")) {
+            throw new JSONException("Invalid: transform key to empty string");
+        }
+        // Transform key to all the same string
+        if (res1.equals(res2)){
+            throw new JSONException("Invalid: transform key to all the same string");
+        }
         JSONObject jo = new JSONObject();
         XMLTokener x = new XMLTokener(reader);
         while (x.more()) {
@@ -1587,7 +1602,7 @@ public class XML {
                     if (x.next() == '[') {
                         string = x.nextCDATA();
                         if (string.length() > 0) {
-                            context.accumulate(config.getcDataTagName(), string);
+                            context.accumulate(keyTransformer.apply(config.getcDataTagName()), string);
                         }
                         return false;
                     }
@@ -1678,12 +1693,7 @@ public class XML {
                     }
 
                     String newTagName = keyTransformer.apply(tagName);
-                    if (newTagName == null) {
-                        throw new JSONException("Invalid: transform key to null");
-                    }
-                    if (newTagName.equals("")) {
-                        throw new JSONException("Invalid: transform key to empty string");
-                    }
+
                     if (config.getForceList().contains(tagName)) {
 
                         // Force the value to be an array
@@ -1718,10 +1728,10 @@ public class XML {
                             string = (String) token;
                             if (string.length() > 0) {
                                 if (xmlXsiTypeConverter != null) {
-                                    jsonObject.accumulate(config.getcDataTagName(),
+                                    jsonObject.accumulate(keyTransformer.apply(config.getcDataTagName()),
                                             stringToValue(string, xmlXsiTypeConverter));
                                 } else {
-                                    jsonObject.accumulate(config.getcDataTagName(),
+                                    jsonObject.accumulate(keyTransformer.apply(config.getcDataTagName()),
                                             config.isKeepStrings() ? string : stringToValue(string));
                                 }
                             }
@@ -1730,12 +1740,7 @@ public class XML {
                             // Nested element
                             if (parse3(x, jsonObject, tagName, config, keyTransformer)) {
                                 String newTagName = keyTransformer.apply(tagName);
-                                if (newTagName == null) {
-                                    throw new JSONException("Invalid: transform key to null");
-                                }
-                                if (newTagName.equals("")) {
-                                    throw new JSONException("Invalid: transform key to empty string");
-                                }
+
                                 if (config.getForceList().contains(tagName)) {
                                     // Force the value to be an array
 
