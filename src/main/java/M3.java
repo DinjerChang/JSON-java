@@ -20,11 +20,13 @@ public class M3 {
 
         try {
 
-            JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), s -> {
-                StringBuilder builder = new StringBuilder(s);
-                builder.reverse();
-                return builder.toString();
-            });
+//            JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), s -> {
+//                StringBuilder builder = new StringBuilder(s);
+//                builder.reverse();
+//                return builder.toString();
+//            });
+
+            JSONObject jobj = XML.toJSONObject(new StringReader(xmlString), s -> "swe262p_" + s);
             System.out.println("all keys: " + jobj.keySet());
             System.out.println("res: " + jobj);
 
