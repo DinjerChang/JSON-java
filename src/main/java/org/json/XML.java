@@ -1660,14 +1660,14 @@ public class XML {
                                 && TYPE_ATTR.equals(string)) {
                             xmlXsiTypeConverter = config.getXsiTypeMap().get(token);
                         } else if (!nilAttributeFound) {
-                            jsonObject.accumulate(string,
+                            jsonObject.accumulate(keyTransformer.apply(string),
                                     config.isKeepStrings()
                                             ? ((String) token)
                                             : stringToValue((String) token));
                         }
                         token = null;
                     } else {
-                        jsonObject.accumulate(string, "");
+                        jsonObject.accumulate(keyTransformer.apply(string), "");
                     }
 
 
