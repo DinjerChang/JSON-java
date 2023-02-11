@@ -1454,6 +1454,56 @@ public class XMLTest {
     }
 
     @Test
+    public void testM3Reverse(){
+        String xmlStr ="<?xml version=\"1.0\"?>\n" +
+                "<catalog>\n" +
+                "    <book id=\"bk101\">\n" +
+                "        <author>Gambardella, Matthew</author>\n" +
+                "        <title>XML Developer's Guide</title>\n" +
+                "        <genre>Computer</genre>\n" +
+                "        <price>44.95</price>\n" +
+                "        <publish_date>2000-10-01</publish_date>\n" +
+                "        <description>An in-depth look at creating applications\n" +
+                "            with XML.</description>\n" +
+                "    </book>\n" +
+                "    <book id=\"bk102\">\n" +
+                "        <author>Ralls, Kim</author>\n" +
+                "        <title>Midnight Rain</title>\n" +
+                "        <genre>Fantasy</genre>\n" +
+                "        <price>5.95</price>\n" +
+                "        <publish_date>2000-12-16</publish_date>\n" +
+                "        <description>A former architect battles corporate zombies,\n" +
+                "            an evil sorceress, and her own childhood to become queen\n" +
+                "            of the world.</description>\n" +
+                "    </book>\n" +
+                "    <book id=\"bk103\">\n" +
+                "        <author>Corets, Eva</author>\n" +
+                "        <title>Maeve Ascendant</title>\n" +
+                "        <genre>Fantasy</genre>\n" +
+                "        <price>5.95</price>\n" +
+                "        <publish_date>2000-11-17</publish_date>\n" +
+                "        <description>After the collapse of a nanotechnology\n" +
+                "            society in England, the young survivors lay the\n" +
+                "            foundation for a new society.</description>\n" +
+                "    </book>\n" +
+                "</catalog>";
+        try {
+            Reader reader = new StringReader(xmlStr);
+            JSONObject jo = XML.toJSONObject(reader, s -> {
+                StringBuilder builder = new StringBuilder(s);
+                builder.reverse();
+                return builder.toString();
+            });
+            reader.close();
+            assertEquals("Correct result.", "{\"golatac\":{\"koob\":[{\"rohtua\":\"Gambardella, Matthew\",\"ecirp\":44.95,\"di\":\"bk101\",\"erneg\":\"Computer\",\"etad_hsilbup\":\"2000-10-01\",\"eltit\":\"XML Developer's Guide\",\"noitpircsed\":\"An in-depth look at creating applications\\n            with XML.\"},{\"rohtua\":\"Ralls, Kim\",\"ecirp\":5.95,\"di\":\"bk102\",\"erneg\":\"Fantasy\",\"etad_hsilbup\":\"2000-12-16\",\"eltit\":\"Midnight Rain\",\"noitpircsed\":\"A former architect battles corporate zombies,\\n            an evil sorceress, and her own childhood to become queen\\n            of the world.\"},{\"rohtua\":\"Corets, Eva\",\"ecirp\":5.95,\"di\":\"bk103\",\"erneg\":\"Fantasy\",\"etad_hsilbup\":\"2000-11-17\",\"eltit\":\"Maeve Ascendant\",\"noitpircsed\":\"After the collapse of a nanotechnology\\n            society in England, the young survivors lay the\\n            foundation for a new society.\"}]}}", jo.toString());
+        }
+        catch (IOException e){
+            System.out.println("Caught a IO Exception ");
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void testM3WithEmptyString(){
         String xmlStr ="<?xml version=\"1.0\"?>\n" +
                 "<catalog>\n" +

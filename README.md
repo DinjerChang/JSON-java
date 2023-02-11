@@ -22,6 +22,18 @@ We wrote eight tests for testing Problem1 and Problem2.
 Run "mvn clean test -Dtest=XMLTest" to test XMLTest.java
 </pre>
 
+### < Milestone3 >
+<pre>
+We wrote four tests for testing Milestone 3.  
+
+1. testM3()                        //add "SWE262_" to every keys as prefix
+2. testM3WithEmptyString()         //throws exception: "Invalid: transform key to empty string" 
+3. testM3WithNull()                //throws exception: "Invalid: transform key to null"
+4. testM3WithDuplicateKeyName()    //throws exception: "Invalid: transform key to all the same string"
+
+Run "mvn clean test -Dtest=XMLTest" to test XMLTest.java
+</pre>
+
 JSON in Java [package org.json]
 ===============================
 
