@@ -555,7 +555,22 @@ public class JSONObject {
                     action.accept(newObj);
                     // DFS: recall the tryAdvance to get all the JSONObjects
                     tryAdvance(action);
-                } else if (!(entry.getValue() instanceof JSONArray)) {
+                }
+                else if(entry.getValue() instanceof JSONArray) {
+                    JSONArray ja = (JSONArray) entry.getValue();
+                    JSONObject newObj = new JSONObject();
+                    newObj.put(entry.getKey(), entry.getValue());
+                    action.accept(newObj);
+                    for (Object jo : ja) {
+                        JSONObject newObjInArray = new JSONObject();
+                        newObjInArray.put(entry.getKey(), jo);
+                        tree = (JSONObject) jo;
+                        action.accept(newObjInArray);
+                        // DFS: recall the tryAdvance to get all the JSONObjects
+                        tryAdvance(action);
+                    }
+                }
+                else if (!(entry.getValue() instanceof JSONArray)) {
                     //Repackage JSONObject so that it contains its key value and puts it into the stream
                     JSONObject newObj = new JSONObject();
                     newObj.put(entry.getKey(), entry.getValue());
@@ -579,6 +594,32 @@ public class JSONObject {
             return null;
         }
     }
+
+//    public Stream<JSONObject> toStream(){
+//        Stream.Builder<JSONObject> builder = Stream.builder();
+//        Set<Entry<String, Object>> entrySet = this.entrySet();
+//        for(Entry<String, Object> e:entrySet){
+//            fillStream(e.getKey(),e.getValue(),builder);
+//        }
+//        Stream<JSONObject> stream = builder.build();
+//        return stream;
+//    }
+//
+//    private void fillStream(String key, Object o,Stream.Builder<JSONObject> builder){
+//        if(o instanceof JSONObject){
+//            for(Entry<String, Object> e:((JSONObject) o).map.entrySet()){
+//                fillStream(e.getKey(),e.getValue(),builder);
+//            }
+//        }else if (o instanceof  JSONArray){
+//            for(int i=0; i<((JSONArray) o).length();i++){
+//                fillStream(key,((JSONArray) o).get(i),builder);
+//            }
+//        }else {
+//            JSONObject newObj = new JSONObject();
+//            newObj.put(key,o);
+//            builder.accept(newObj);
+//        }
+//    }
 
     /**
      * Append values to the array under a key. If the key does not exist in the
