@@ -18,6 +18,7 @@ For example, the input JSONObject is as follows:
 
 The expected output stream should look like this:  
 <pre>
+{"contact":{"nick":"Crista","address":{"zipcode":92614,"street":"Ave of Nowhere"},"name":"Crista Lopes"}}
 {"nick":"Crista"}
 {"address":{"zipcode":92614,"street":"Ave of Nowhere"}}
 {"zipcode":92614}
