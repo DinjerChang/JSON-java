@@ -15,18 +15,15 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.Locale;
+import java.util.*;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * A JSONObject is an unordered collection of name/value pairs. Its external
@@ -492,6 +489,95 @@ public class JSONObject {
             this.put(key, new JSONArray().put(object).put(value));
         }
         return this;
+    }
+
+    public Stream<JSONObject> toStream() {
+        return StreamSupport.stream(this.spliterator(), false);
+    }
+
+    public Spliterator<JSONObject> spliterator() {
+        return new NodeSpliterator(this);
+    }
+
+    /**
+     * NodeSpliterator implements Spliterator<JSONObject> and methods are overwritten
+     */
+    class NodeSpliterator implements Spliterator<JSONObject> {
+
+        private final JSONObject root;
+        private JSONObject tree;
+
+        NodeSpliterator(JSONObject t) {
+            root = tree = t;
+        }
+
+        /**
+         * DISTINCT: Characteristic value signifying that, for each pair of encountered elements x, y, !x.equals(y).
+         * IMMUTABLE: Characteristic value signifying that the element source cannot be structurally modified;
+         * NONNULL: Characteristic value signifying that the source guarantees that encountered elements will not be null.
+         *
+         * @return
+         */
+        @Override
+        public int characteristics() {
+            return Spliterator.DISTINCT | Spliterator.IMMUTABLE | Spliterator.NONNULL;
+        }
+
+        @Override
+        public long estimateSize() {
+            return Long.MAX_VALUE;
+        }
+
+        /**
+         * tryAdvance() iterate elements individually
+         * If a remaining element exists, performs the given action on it, returning true; else returns false.
+         * We only manipulate the JSONObject. So in the stream, all the elements are JSONObject
+         *
+         * @param action
+         * @return
+         */
+        @Override
+        public boolean tryAdvance(Consumer<? super JSONObject> action) {
+            // tree is a global variable responsible for recording tree node
+            // current gets the value of tree
+            JSONObject current = tree;
+
+            // entrySet() gets a set of entries of the JSONObject.
+            Set<Entry<String, Object>> all_entry = tree.entrySet();
+            // iterate the set of entries of tree node
+            for (Entry<String, Object> entry : all_entry) {
+                if (entry.getValue() instanceof JSONObject) {
+                    // update tree node
+                    tree = (JSONObject) entry.getValue();
+                    //Repackage JSONObject so that it contains its key value and puts it into the stream
+                    JSONObject newObj = new JSONObject();
+                    newObj.put(entry.getKey(), entry.getValue());
+                    action.accept(newObj);
+                    // DFS: recall the tryAdvance to get all the JSONObjects
+                    tryAdvance(action);
+                } else if (!(entry.getValue() instanceof JSONArray)) {
+                    //Repackage JSONObject so that it contains its key value and puts it into the stream
+                    JSONObject newObj = new JSONObject();
+                    newObj.put(entry.getKey(), entry.getValue());
+                    action.accept(newObj);
+                }
+            }
+            tree = current;
+            if (tree == root)
+                return false;
+            else
+                return true;
+        }
+
+        /**
+         * return null: this spliterator cannot be split
+         *
+         * @return
+         */
+        @Override
+        public Spliterator<JSONObject> trySplit() {
+            return null;
+        }
     }
 
     /**
