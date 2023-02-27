@@ -27,3 +27,8 @@ The expected output stream should look like this:
 </pre>
 
 ### Unit Tests are added in src/test/java/org.json.junit/Milestone4Test.java
+
+`testForEach()` at line 19 ~ 34  
+`testFilter()` at line 38 ~ 51   
+`testMap()` at line 54 ~ 63
+
