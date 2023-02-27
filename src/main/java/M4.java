@@ -87,7 +87,7 @@ public class M4 {
 
         try {
 
-            JSONObject obj = XML.toJSONObject(xmlString3);
+            JSONObject obj = XML.toJSONObject(xmlString2);
             Stream<JSONObject> stream = obj.toStream();
 
             //System.out.println(obj);
