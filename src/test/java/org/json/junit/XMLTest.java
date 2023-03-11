@@ -1391,19 +1391,7 @@ public class XMLTest {
             String errorMessage = "Path not found";
             assertEquals(errorMessage, e.getMessage());
         }
-//        exceptionRule.expect(JSONPointerException.class);
-//        exceptionRule.expectMessage("Path not found");
-//        String xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
-//                "<contact>\n"+
-//                "    <nick>Crista </nick>\n"+
-//                "    <name>Crista Lopes</name>\n" +
-//                "    <address>\n" +
-//                "      <street>Ave of Nowhere</street>\n" +
-//                "      <zipcode>92614</zipcode>\n" +
-//                "    </address>\n" +
-//                "</contact>";
-//        JSONObject replacement = XML.toJSONObject("<street>Ave of the Arts</street>\n");
-//        XML.toJSONObject(new StringReader(xmlString), new JSONPointer("/contact/address/nooo"), replacement);
+
     }
 
     @Test
