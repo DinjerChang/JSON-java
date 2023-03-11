@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 
@@ -691,7 +693,7 @@ public class XML {
         return jo;
     }
 
-
+    // milestone 2 P1
     public static JSONObject toJSONObject(Reader reader, JSONPointer path) throws JSONException {
         JSONObject jo = new JSONObject();
         XMLTokener x = new XMLTokener(reader);
@@ -718,6 +720,7 @@ public class XML {
         return jo;
     }
 
+    // milestone 2 P2
     public static JSONObject toJSONObject(Reader reader, JSONPointer path, JSONObject replacement) throws JSONException {
         JSONObject jo = new JSONObject();
         XMLTokener x = new XMLTokener(reader);
@@ -738,6 +741,7 @@ public class XML {
         return jo;
     }
 
+    // milestone 3
     public static JSONObject toJSONObject(Reader reader, Function<String, String> keyTransformer) {
         // check string condition
         String res1 = keyTransformer.apply("res1");
@@ -1563,6 +1567,7 @@ public class XML {
         }
     }
 
+    // milestone 3
     private static boolean parse3(XMLTokener x, JSONObject context, String name, XMLParserConfiguration config, Function<String, String> keyTransformer)
             throws JSONException {
         char c;
@@ -1773,4 +1778,35 @@ public class XML {
             }
         }
     }
+
+    /*
+    milestone 5
+
+    When a task is submitted to the ExecutorService, it is added to a queue of tasks to be executed.
+    The ExecutorService then uses a pool of worker threads to execute the tasks in the queue.
+
+    The ExecutorService also provides a way to obtain a Future object when a task is submitted.
+    A Future represents the result of an asynchronous computation, and allows the calling thread to continue executing while the task is being processed by the worker thread.
+    The calling thread can later retrieve the result of the computation by calling the get() method on the Future.
+     */
+
+    public static Future<JSONObject> toJSONObject(Reader reader, Function<String, String> keyTransformer,
+                                                  Consumer<Exception> exceptionHandler) {
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        Future<JSONObject> future;
+        if (keyTransformer == null) {
+            exceptionHandler.accept(new Exception());
+            return null;
+        }
+        //milestone 3 function using in lambda expression body as a task
+        future = executor.submit(()->XML.toJSONObject(reader, keyTransformer));
+
+        if (future.isDone()) {
+            executor.shutdown();
+        }
+        return future;
+    }
+
 }

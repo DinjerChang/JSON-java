@@ -490,7 +490,7 @@ public class JSONObject {
         }
         return this;
     }
-
+    // milestone 4
     public Stream<JSONObject> toStream() {
         return StreamSupport.stream(this.spliterator(), false);
     }
@@ -595,31 +595,6 @@ public class JSONObject {
         }
     }
 
-//    public Stream<JSONObject> toStream(){
-//        Stream.Builder<JSONObject> builder = Stream.builder();
-//        Set<Entry<String, Object>> entrySet = this.entrySet();
-//        for(Entry<String, Object> e:entrySet){
-//            fillStream(e.getKey(),e.getValue(),builder);
-//        }
-//        Stream<JSONObject> stream = builder.build();
-//        return stream;
-//    }
-//
-//    private void fillStream(String key, Object o,Stream.Builder<JSONObject> builder){
-//        if(o instanceof JSONObject){
-//            for(Entry<String, Object> e:((JSONObject) o).map.entrySet()){
-//                fillStream(e.getKey(),e.getValue(),builder);
-//            }
-//        }else if (o instanceof  JSONArray){
-//            for(int i=0; i<((JSONArray) o).length();i++){
-//                fillStream(key,((JSONArray) o).get(i),builder);
-//            }
-//        }else {
-//            JSONObject newObj = new JSONObject();
-//            newObj.put(key,o);
-//            builder.accept(newObj);
-//        }
-//    }
 
     /**
      * Append values to the array under a key. If the key does not exist in the
